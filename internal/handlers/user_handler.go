@@ -24,24 +24,9 @@ func NewUserHandler(db *sql.DB) *UserHandler {
 }
 
 func (h *UserHandler) GetUsers(context *gin.Context) {
-	var u models.User
-	var err error
 	var users []models.User
 
-	u.ID, err = strconv.Atoi(context.Query("id"))
-	u.Email = context.Query("email")
-	u.Name = context.Query("name")
-
-	if err != nil {
-		context.IndentedJSON(http.StatusForbidden, gin.H{"message": "id must be a number"})
-	}
-
-	if u.ID > 0 && (u.Email != "" || u.Name != "") {
-		log.Printf("Excecuting find user by query.\n")
-		users, _ = h.userService.GetUsers(&u)
-	} else {
-		users, _ = h.userService.GetAllUsers()
-	}
+	users, _ = h.userService.GetAllUsers()
 
 	context.IndentedJSON(http.StatusOK, users)
 }

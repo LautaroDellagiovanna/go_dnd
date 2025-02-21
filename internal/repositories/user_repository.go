@@ -38,7 +38,7 @@ func (r *UserRepository) FindAll() ([]models.User, error) {
 }
 
 func (r *UserRepository) Find(u *models.User) ([]models.User, error) {
-	query_str := "SELECT * FROM usuarios WHERE id=? AND name=? AND email=?"
+	query_str := "SELECT * FROM usuarios WHERE id=?"
 
 	rows, err := r.db.Query(query_str, u.ID, u.Name, u.Email)
 

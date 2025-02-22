@@ -25,8 +25,12 @@ func NewUserHandler(db *sql.DB) *UserHandler {
 
 func (h *UserHandler) GetUsers(context *gin.Context) {
 	var users []models.User
+	var u models.User
 
-	users, _ = h.userService.GetAllUsers()
+	u.Name = context.Query("name")
+	u.Email = context.Query("email")
+
+	users, _ = h.userService.GetUsers(&u)
 
 	context.IndentedJSON(http.StatusOK, users)
 }

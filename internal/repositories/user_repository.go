@@ -38,9 +38,20 @@ func (r *UserRepository) FindAll() ([]models.User, error) {
 }
 
 func (r *UserRepository) Find(u *models.User) ([]models.User, error) {
-	query_str := "SELECT * FROM usuarios WHERE id=?"
+	query_str := "SELECT * FROM usuario WHERE 1=1"
 
-	rows, err := r.db.Query(query_str, u.ID, u.Name, u.Email)
+	var args []interface{}
+
+	if u.Name != "" {
+		query_str += " AND name LIKE ?"
+		args = append(args, "%"+u.Name+"%")
+	}
+	if u.Email != "" {
+		query_str += " AND email LIKE ?"
+		args = append(args, "%"+u.Email+"%")
+	}
+
+	rows, err := r.db.Query(query_str, args...)
 
 	if err != nil {
 		return nil, err
